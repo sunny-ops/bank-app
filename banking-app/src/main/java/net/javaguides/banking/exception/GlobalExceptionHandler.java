@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     // Handle specific exception -- AccountException
+    // will catch the AccountException when it is thrown
     @ExceptionHandler(AccountException.class)
     public ResponseEntity<ErrorDetails> handleAccountException(AccountException exception,
                                                                WebRequest webRequest) {
