@@ -1,6 +1,7 @@
 package net.javaguides.banking.service.impl;
 
 import net.javaguides.banking.dto.AccountDto;
+import net.javaguides.banking.dto.TransactionDto;
 import net.javaguides.banking.dto.TransferFundDto;
 import net.javaguides.banking.entity.Account;
 import net.javaguides.banking.entity.Transaction;
@@ -122,5 +123,24 @@ public class AccountServiceImpl implements AccountService {
         transactionRepository.save(transaction);
 
 
+    }
+
+    @Override
+    public List<TransactionDto> getAccountTransactions(Long accountId) {
+        List<Transaction> transactions = transactionRepository.
+                findByAccountIdOrderByTimestampDesc(accountId);
+        return transactions.stream()
+                .map((transaction) -> convertEntityToDto(transaction))
+                .collect(Collectors.toList());
+    }
+
+    private TransactionDto convertEntityToDto(Transaction transaction) {
+        return new TransactionDto(
+                transaction.getId(),
+                transaction.getAccountId(),
+                transaction.getAmount(),
+                transaction.getTransactionType(),
+                transaction.getTimestamp()
+                );
     }
 }
